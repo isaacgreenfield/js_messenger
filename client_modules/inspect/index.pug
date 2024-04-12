@@ -1,0 +1,11 @@
+append header
+    style
+        include style.css
+append body
+    script(type="text/x-ejs-template", template="inspect")
+        .inspect
+            .media
+            input.trans.left(type="button")
+            input.trans.right(type="button")
+    script
+        include script.js
