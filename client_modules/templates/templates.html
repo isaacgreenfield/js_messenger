@@ -1,0 +1,138 @@
+<script template="visual" type="text/x-ejs-template">
+    <% const c = (w, d) => '/file?' + (d? 'd=1&' : '') + 'id=' + w.id %>
+    <% const total = files.image.length + files.video.length %>
+
+    <% if (total > 1) { %>
+        <% let nlarge = total % 3; %>
+        <% if (nlarge == 1) nlarge = 4; %>
+        <% let i = 0 %>
+
+        <div class="visual" inspect-group>
+            <% while (i < total) { %>
+                <% let isimg = i < files.image.length %>
+                <% let cls = (i < nlarge? 'large' : 'small') + (isimg? '': ' video') %>
+
+                <div class="tile <%= cls %>" >
+
+                    <% if (isimg) { %>
+                        <img src="<%= c(files.image[i]) %>">
+                    <% } else { %>
+                        <video src="<%= c(files.video[i - imgc]) %>", preload="metadata">
+                    <% }; i++; %>
+
+                </div>
+
+            <% } %>
+        </div>
+    <% } else if (files.image.length) { %>
+        <img src="<%= c(files.image[0]) %>" class="semi-image" inspect>
+    <% } else if (files.video.length) { %>
+        <video controls class="semi-video" preload="metadata">
+            <source src="/file?id=<%= files.video[0].id %>#t=0.001">
+        </video>
+    <% } %>
+</script>
+
+<script template="audio" type="text/x-ejs-template">
+    <% if (audio.length) { %>
+        <div class="audio">
+            <% audio.forEach(a => { %>
+                <audio controls preload="metadata">
+                    <source src="/file?id=<%= a.id %>">
+                </audio>
+            <% }) %>
+        </div>
+    <% } %>
+</script>
+
+<script template="other" type="text/x-ejs-template">
+    <% if (other.length) { %>
+        <ul class="other">
+            <% other.forEach(o => { %>
+                <li class="finite">
+                    <a href="/file?d=1&id=<%= o.id %>" class="clean">
+                        <%= o.name %>
+                    </a>
+                </li>
+            <% }) %>
+        </ul>
+    <% } %>
+</script>
+
+<script template="html" type="text/x-ejs-template">
+    <% if (html) { %>
+        <div class="html block styled-scroll">
+            <iframe scrolling="no"></iframe>
+        </div>
+    <% } %>
+</script>
+
+<script template="post-content" type="text/x-ejs-template">
+    <user-content>
+        <% if (text) { %>
+            <p class="text"></p>
+        <% }; %>
+        <%- templateManager.apply("audio", {audio: files.audio}) %>
+        <%- templateManager.apply("visual", {files: files}) %>
+        <%- templateManager.apply("other", {other: files.other}) %>
+    </user-content>
+</script>
+
+<!-- <%- templateManager.apply("html", {html: html}) %> -->
+
+<script template="system-message" type="text/x-ejs-template">
+    <span class="system-message"><%- contentCompiler.compile(content, {disableLineBreaks: true, disableYT: true}) %></span>
+</script>
+
+<script template="user-message" type="text/x-ejs-template">
+    <div class="user-message" type="<%=data.type%>">
+        <img class="avatar" src="/getuseravatar?id=<%= data.sender_id %>">
+        <div class="block content-block">
+            <a href="/user?tag=<%= data.sender_tag %>" class="finite clean sender-name">
+                <%= data.sender_name %>
+            </a>
+
+            <user-content>
+                <div class="reply-wrapper" style="display:none">
+                    <div class="reply-to-msg block">
+                        <span class="user-name finite"></span>
+                        <p class="msg-text finite"></p>
+                    </div>
+                </div>
+
+                <% if (data.type == 'default') { %>
+                    <%- templateManager.apply("visual", {files: data.files}) %>
+                    <%- templateManager.apply("audio", {audio: data.files.audio}) %>
+                    <%- templateManager.apply("other", {other: data.files.other}) %>
+                <% } else if (data.type == 'sticker') { %>
+                    <img src="<%=data.content%>" style="display:block;margin:0;height:130px;align-self:center;">
+                <% } %>
+
+                <div class="bottom">
+                    <p class="text"></p>
+                    <div class="meta">
+                        <span class="status"></span>
+                        <span class="time">
+                            <%= utils.formatTime(data.datetime) %>
+                        </span>
+                    </div>
+                </div>
+
+            </user-content>
+        </div>
+    </div>
+</script>
+
+<script template="any-message" type="text/x-ejs-template">
+    <div class="message-wrapper" msg-id="<%= data.id %>">
+        <div class="date-label">
+            <%- templateManager.apply("system-message", {content: utils.getLocalizedDateLabel(data.datetime, true)}) %>
+        </div>
+
+        <% if (data.sender_id) { %>
+            <%- templateManager.apply("user-message", {data: data, myid: myid}) %>
+        <% } else { %>
+            <%- templateManager.apply("system-message", {content: data.content}) %>
+        <% } %>
+    </div>
+</script>
