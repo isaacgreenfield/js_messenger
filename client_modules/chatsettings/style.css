@@ -1,0 +1,86 @@
+.chat-settings {
+    width:400px;
+    max-width:100%;
+    display:grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: repeat(3, auto);
+    row-gap:8px;
+    column-gap:15px;
+}
+
+.chat-settings .avatar-wrapper {
+    grid-row:1/4;
+    align-self:start;
+    justify-self:center;
+    display:flex;
+    flex-direction: column;
+    gap:5px;
+    align-items:center;
+}
+
+.chat-settings .avatar {
+    height:100px;
+    cursor:pointer;
+}
+
+.chat-settings input.name, input#descr {
+    align-self:center;
+    width: 100%;
+}
+
+.chat-settings input.name {
+    font-weight:bold;
+}
+
+.chat-settings .description {
+    max-height:150px;
+    width:100%;
+    overflow-x:hidden;
+    overflow-y:auto;
+    display:flex;
+    gap:5px;
+    flex-direction: column;
+}
+
+.chat-settings .description p {
+    display: none;
+    margin:0;
+    padding:8px;
+    overflow-y:auto;
+    word-wrap: break-word;
+}
+
+.chat-settings .description textarea {
+    resize:vertical;
+    width:100%;
+    min-height:70px;
+    max-height:100%;
+    max-width:unset;
+}
+
+.chat-settings .description textarea::-webkit-scrollbar {
+    display:none;
+}
+
+.chat-settings .description .preview {
+    flex-shrink: 0;
+}
+
+.chat-settings .ispublic {
+    display:flex;
+    align-items: flex-start;
+    gap:5px;
+    grid-column:2;
+}
+
+.chat-settings .ispublic > * {
+    cursor:pointer;
+}
+
+.chat-settings .ispublic label {
+    user-select: none;
+}
+
+.chat-settings .delete-avatar {
+    display:none;
+}
