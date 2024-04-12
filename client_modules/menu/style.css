@@ -1,0 +1,60 @@
+.popup.menu {
+  justify-content:flex-end;
+}
+
+.popup.menu .window {
+  height:100%;
+  max-width:100%;
+  margin:0;
+  border-radius:0;
+  width:250px;
+  background:white;
+}
+
+.popup.menu .wrapper {
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+.popup.menu .current {
+  display:flex;
+  gap:6px;
+  max-width: 100%;
+  overflow:hidden;
+  align-items: center;
+}
+
+.popup.menu .menu-body {
+  width:100%;
+}
+
+.popup.menu nav {
+  margin-top:8px;
+  gap:5px;
+  padding:0;
+  padding-right:5px;
+  max-width:250px;
+}
+
+@keyframes menu-appear {
+  from {
+    transform:translate(100%, 0)
+  }
+  to {
+    transform:translate(0, 0);
+  }
+}
+
+@keyframes menu-disappear {
+  from {
+    transform:translate(0, 0)
+  }
+  to {
+    transform:translate(100%, 0);
+  }
+}
