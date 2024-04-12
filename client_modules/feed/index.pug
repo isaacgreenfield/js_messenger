@@ -1,0 +1,59 @@
+append header
+    style
+        include style.css
+
+append body
+    script
+        include script.js
+    script(type="text/x-ejs-template", template="post")
+        .post.block(id!="post<%=data.id%>")
+            .top-bar
+                a.author.button.light(href!="/user?id=<%=data.author_id%>")
+                    img.avatar(src!="/getuseravatar?id=<%=data.author_id%>")
+                    span.finite.name <%=data.author_name%>
+                    span.datetime <%=utils.getPostDatetimeLabel(data.datetime, true)%>
+                button.button.dots.light ...
+            <% if (data.title) { %>
+                span.title <%=utils.escapeHTML(data.title)%>
+            <% } %>
+            <%- templateManager.createHTML("post-content", data) %>
+            .actions
+                button.button.like 👍
+                button.button.dislike 👎
+                select.button.donate
+                    option(style="display:none", value="default", selected) Пожертвовать
+                    option(value="10") 10EBL
+                    option(value="25") 25EBL
+                    option(value="50") 50EBL
+                    option(value="100") 100EBL
+                    option(value="cancel") Отмена
+
+            .comment-section
+                hr
+                a.load-more.button.light(href="#") Загрузить ещё комментарии
+                ul.comments.styled-scroll
+                .add-comment
+                    input(type="text", placeholder="Ваш комментарий")
+                    button.button(href="#") 📨
+
+    script(type="text/x-ejs-template", template="post-comment")
+        li(id!="comment<%=data.id%>")
+            img.avatar(src!="/getuseravatar?id=<%=data.author_id%>")
+            .info
+                a.name.finite.button.light.shifted(href!="/user?id=<%=data.author_id%>") <%=data.author_name%>
+                span.datetime <%= utils.getPostDatetimeLabel(data.datetime).toLowerCase() %>
+            <% if (me && me.id == data.author_id) { %>
+                a.delete.button.light 🗑️
+            <% } %>
+            p.text <%- contentCompiler.compile(data.text, {disableYT: true}) %>
+
+
+    script(type="text/x-ejs-template", template="post-reactions")
+        ul.styled-scroll(style="margin:0;overflow-y:auto;max-height:500px; width:max-content;list-style-type:none;padding:0;")
+            <% reactions.forEach(r => { %>
+            li(style="display:flex;width:100%;justify-content:space-between;align-items:center;gap:30px;")
+                a.button.light.user(href!="/user?id=<%=r.user_id%>", style="display:flex;gap:8px;align-items:center")
+                    img.avatar(src!="/getuseravatar?id=<%=r.user_id%>", style="height:40px;width:40px")
+                    span.name <%= r.user_name %>
+                span.reaction <%= r.type == 1? '👍' : '👎' %>
+            <% }) %>
