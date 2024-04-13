@@ -1,0 +1,10 @@
+.post-body-preview .post-body {
+    width:600px;
+    max-width:100%;
+    height:500rpx;
+    max-height: 100%;
+    background:white;
+    border-radius:20px;
+    overflow-y:auto;
+    overflow-x:auto;
+}
