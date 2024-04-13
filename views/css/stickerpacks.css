@@ -1,0 +1,56 @@
+.stickerpacks {
+    display:grid;
+    margin-top:15px;
+    grid-auto-rows:max-content;
+    grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+    gap:12px;
+}
+
+.stickerpack {
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap:2px;
+    padding:7px;
+}
+
+.stickerpack > * {
+    user-select: none;
+    pointer-events: none;
+}
+
+.stickerpack .preview {
+    width:100%;
+    max-height:150px;
+    object-fit:contain;
+    margin:0;
+}
+
+.stickerpack .name {
+    font-size:20px;
+    max-width: 100%;
+}
+
+.stickerpack .available {
+}
+
+.stickerpack .price {
+    font-weight:bold;
+    font-size:19px;
+}
+
+.inspect-stickerpack .stickers {
+    display:grid;
+    grid-auto-rows: max-content;
+    grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+    gap:10px;
+    overflow-y:auto;
+    height:500px;
+    width:500px;
+    max-width: 100%;
+}
+
+.inspect-stickerpack .sticker {
+    width:100%;
+    object-fit:contain;
+}
