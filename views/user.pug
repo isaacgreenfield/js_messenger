@@ -1,0 +1,39 @@
+extends index
+
+append header
+    style
+        include css/usercontent.css
+    style
+        include css/user.css
+
+append body
+    script
+        include js/user.js
+
+block main
+    .user(userid=target.id)
+        img.avatar(src='/getuseravatar?id=' + target.id)
+        .info
+            h2.name= target.name
+            span.tag= '@' + target.tag
+            span.last-seen
+            p.bio= target.bio
+            a.friends(href="#")
+        .actions
+            if user && user.id == target.id
+                a.button.settings(href="/settings?id=" + target.id) Настроить профиль
+            else
+                a.button.direct(href="/direct?with=" + target.id) Сообщение...
+                a.button.add-friend(href="#") Добавить в друзья
+                a.button.ebank(href="#") Перевести EBL...
+
+    .feed(style="margin-top:20px;")
+
+    script(type="text/x-ejs-template", template="friends")
+        ul.styled-scroll(style="margin:0;overflow-y:auto;max-height:500px; width:max-content;list-style-type:none;padding:0;")
+            <% friends.forEach(r => { %>
+            li
+                a.button.light.user(href!="/user?id=<%=r.id%>", style="display:flex;gap:8px;align-items:center")
+                    img.avatar(src!="/getuseravatar?id=<%=r.id%>", style="height:40px;width:40px")
+                    span.name <%= r.name %>
+            <% }) %>
