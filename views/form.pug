@@ -1,0 +1,16 @@
+extends index
+
+append body
+    script
+        include js/form.js
+        | loadForm();
+
+append header
+    - let titleText = form.meta.title ?? 'Форма'
+    title= titleText
+
+append main
+    h1.page-header
+    form(name=form.meta.name)
+
+
