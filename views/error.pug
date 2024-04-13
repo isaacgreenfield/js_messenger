@@ -1,0 +1,13 @@
+doctype html
+html
+    head
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        style
+            include css/style.css
+        title Ошибка!
+    body
+        .global-wrapper
+            .error
+                h1(style="margin-bottom:20px") Ошибка!
+                p.block(style="display:inline-block;margin:0")!= error.replace(/\n/g, '<br>')
+                a(style="display:block;margin-top:20px", href="/") Вернуться на сайт
