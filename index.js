@@ -122,7 +122,7 @@ function renderlessQuery(req, res, reqlogin, handler) {
 }
 
 function safePost(pattern, onpost, upl, reqlogin) {
-    upl = cfx.core.upload.none()
+    upl ??= cfx.core.upload.none()
 
     app.post(pattern, upl, (req, res) => {
         renderlessQuery(req, res, reqlogin, onpost)
