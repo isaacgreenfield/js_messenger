@@ -1,0 +1,28 @@
+extends index
+
+include ../client_modules/chatsettings/index
+
+append body
+    script
+        include js/chatlist.js
+
+append header
+    style
+        include css/chatlist.css
+
+block main
+    h1.page-header Сообщения
+    a.button.create-chat Создать чат
+    a.button(href="/publicchatlist", style="margin-top:5px;") Публичные чаты
+    ul.chatlist
+
+append body
+    script(template="chat-view", type="text/x-ejs-template")
+        li.block.chat(chatid!="<%=view.id%>", class!="<%=utils.classAttr({newmsg: view.unread > 0})%>")
+            img.avatar(src!="/getchatavatar?id=<%=view.id%>")
+            span.finite.title <%= view.name %>
+            span.datetime <%= utils.getMessageDatetimeLabel(view.lm.datetime) %>
+            .lm-preview(class!="<%=utils.classAttr({mine: view.lm.mine, read: view.lm.read})%>")
+                p.finite.content <%- view.lm.preview %>
+                span.status
+            span.newmsg <%= view.unread %>
