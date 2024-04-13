@@ -1,0 +1,122 @@
+extends index
+
+include ../client_modules/chatsettings/index
+
+append header
+    script(src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js")
+    style
+        include css/chat.css
+        include css/usercontent.css
+append body
+    script
+        include js/chat.js
+
+block main
+    .chat-header.block
+        .info(onclick='alert("options")')
+            img.avatar
+            span.chat-name.finite
+            span.subinfo.finite
+
+    .voice-chat.block(style="display:none;")
+        .preview
+            span.list.finite В звонке:
+            span.count 0 участников
+
+    .holder-wrapper.block.styled-scroll
+        .load-zone
+        .holder
+    .reply-bar.block(style="display:none;")
+        .reply-to-msg
+            span.user-name Lorem ipsum dolor sit amet.
+            span.msg-text Lorem ipsum dolor sit amet.
+        button.button.discard 🗑️
+    .input-bar
+        .block.audio-record-bar
+            b Запись:
+            span.finite 0 секунд
+        textarea.entry(placeholder="Сообщение")
+        button.button#stickers 😀
+        button.button#file 📁
+        button.button#record 🎤
+        button.button#discard-audio 🗑️
+        button.button#send-audio ✅️
+        button.button#send 📨
+
+    script(type="text/x-ejs-template", template="stickerscw")
+        .grid.emojis#emoji.styled-scroll
+                <% emojiList.forEach((emoji, i) => { %>
+                button.button.emoji <%=emoji%>
+                <% }) %>
+
+        <% packs.forEach(pack => { %>
+        .grid.stickers(id!="<%=pack.tag%>").disabled.styled-scroll
+            <% for(let i = 0; i < pack.count; i++) { %>
+            button.button.sticker(id!="<%=i%>")
+                img(src!="/public/stickers/<%=pack.tag%>/<%=i%>.png")
+            <% } %>
+        <% }) %>
+        hr
+        .navigation
+            button.button#emoji 😀
+            <% packs.forEach(pack => { %>
+            button.button(id!="<%=pack.tag%>")
+                img.preview(src!="/public/stickers/<%=pack.tag%>/0.png")
+            <% }) %>
+            button.button#buy +
+
+    script(type="text/x-ejs-template", template="chat-popup")
+        a.chat-link.block(href!="https://coffeetox.ru/chat?id=<%=chatid%>") Ссылка: https://coffeetox.ru/chat?id=<%=chatid%>
+        .actions
+            <% if (admin || direct) { %>
+            a.button.delete-chat Удалить чат
+            <% }; %>
+            a.button.clear-history Очистить историю
+            <% if (!direct) { %>
+            a.button.leave-chat Выйти из чата
+            <% }; %>
+            <% if (admin && !direct) { %>
+            a.button.add-members Добавить участников
+            <% }; %>
+        .tab-view
+            .block.controls
+                a.button#show-members Участники
+                a.button#show-media Медиа
+                a.button#show-audio Аудио
+                a.button#show-other Другое
+            .tab.styled-scroll#members
+                .flex-holder
+            .tab.styled-scroll#media
+                .grid-holder(inspect-group="1")
+            .tab.styled-scroll#audio
+                .flex-holder
+            .tab.styled-scroll#other
+                .flex-holder
+
+    script(type="text/x-ejs-template", template="chat-memberlist-item")
+        div.member(id="member-uid<%=id%>")
+            a.profile.button.light(href!="/user?id=<%=id%>")
+                img.avatar(src!="/getuseravatar?id=<%=id%>")
+                .top-bar
+                    span.name.finite <%=name%>
+                    span.admin-label (админ)
+                span.last-seen <%= utils.getLastSeenStatus(lastSeen) %>
+            button.button.dots ...
+
+
+    script(type="text/x-ejs-template", template="chat-audiolist-item")
+        .audiofile
+            span.filename <%=name%>
+            audio(controls)
+                source(src!="/file?id=<%=id%>")
+
+    script(type="text/x-ejs-template", template="chat-medialist-item")
+        .visual-wrapper(class!="<%=mimetype%>")
+            <% if (mimetype == 'image') { %>
+            img(src!="/file?id=<%=id%>")
+            <% } else { %>
+            video(src!="/file?id=<%=id%>", preload="metadata")
+            <% }; %>
+
+    script(type="text/x-ejs-template", template="chat-otherlist-item")
+        a(href!="/file?id=<%=id%>", download) <%=name%>
