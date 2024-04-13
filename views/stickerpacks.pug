@@ -1,0 +1,23 @@
+extends index
+
+append header
+
+    style
+        include css/stickerpacks.css
+
+block main
+    h1.page-header Стикеры
+    .stickerpacks
+
+append body
+    script
+        include js/stickerpacks.js
+    script(type="text/x-ejs-template", template="stickerpack")
+        .stickerpack.button
+            img.preview(src!=`/public/stickers/<%=tag%>/0.png`)
+            span.finite.name <%=name%>
+            <% if (available) { %>
+            span.available Доступно ✅
+            <% } else {%>
+            span.price <%=price%>EBL
+            <% } %>
