@@ -1,0 +1,114 @@
+.stats {
+  box-sizing:content-box;
+  width:max-content;
+  padding-right:50px;
+}
+
+.stats .balance {
+  display:block;
+  margin:0;
+  font-weight:bold;
+  font-size:25px;
+}
+
+.stats .capital {
+  font-size:17px;
+  display:block;
+  margin-top:7px;
+  margin-bottom:0;
+  font-style:italic;
+}
+
+.ebank-table {
+  width:100%;
+}
+
+.ebank-table tr:nth-child(2n + 1) {
+  background:#00000023;
+}
+
+.ebank-table td, .ebank-table th {
+  padding:5px 8px;
+}
+
+.ebank-table .user {
+  display:flex;
+  align-items: center;
+  height: 100%;
+  gap:10px;
+}
+
+.ebank-table .user .avatar {
+  height:40px;
+}
+
+.capitallb {
+  margin-top:20px;
+}
+
+.capitallb .place {
+  width:min-content;
+  text-align: center;
+}
+
+.capitallb .place1, .place2, .place3 {
+  padding:3px;
+  font-weight: bold;
+}
+
+.capitallb .place1 {
+  color:#f2ce00;
+  text-decoration: underline;
+}
+
+.capitallb .place1::after {
+  content:'👑'
+}
+
+.capitallb .place2 {
+  color:        #0098f7;
+}
+
+.capitallb .place3 {
+  color:#ff0000;
+}
+
+.capitallb .capital, .capitallb .balance {
+  text-align: center;
+}
+
+.capitallb-wrapper {
+  max-width: 100%;
+  overflow-x:scroll;
+}
+
+.transactions-wrapper {
+  max-width:650px;
+  max-height:400px;
+  overflow-y:auto;
+  overflow-x:auto;
+}
+
+.transactions .amount, .transactions .datetime {
+  text-align:center;
+  width:max-content;
+}
+
+.transactions .target {
+}
+
+.transactions .amount .positive {
+  color:#007900;
+}
+
+.transactions .comment {
+  width: 20%;
+}
+
+.transactions .comment p {
+  margin:0;
+}
+
+.transactions .amount .negative {
+  color:#c11600;
+}
