@@ -1,0 +1,60 @@
+mixin nav(n, light, login, logout)
+    nav(class=`${login&&'login'} ${logout&&'logout'}`)
+        each k in Object.keys(n)
+            a.button(href=n[k].link, id='nav' + k, class=light&&"light")
+                span.label= n[k].text
+                span.unread.zero
+
+mixin current(user, logout)
+    .current
+        if user
+            a.clean(href="/user?id=" + user.id)= user.name
+            if logout
+                a.button.light(href="/logout", recurrent) 🚪
+        else
+            a.clean(href="/form?name=login", recurrent) Вход
+
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        script(src="/socket.io/socket.io.js")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="icon" href="/public/coffee.png")
+        script(src="https://cdn.jsdelivr.net/npm/ejs@3.1.9/ejs.min.js")
+        style
+            include css/style.css
+            block style
+        block header
+        title CoffeeTox
+    body
+        .attention-banner#banner1
+        .attention-banner#banner2
+        .global-wrapper
+            .main-grid
+                header
+                    .logo
+                        a.button.light(href="/") ☕tox
+                    .right
+                        +current(user, true)
+                        a.burger.button.light(href="javascript:callMenu()")
+                +nav(nav, true, false, false)
+                main.styled-scroll
+                    block main
+
+        script(type="text/x-ejs-template", template="menu")
+            .wrapper
+                .menu-body
+                    if user
+                        .current
+                            span Аккаунт:
+                            a.button.light.account.finite(href="/user?tag=" + user.tag)= '@' + user.tag
+                    +nav(nav, false, !Boolean(user), Boolean(user))
+                .menu-footer
+                    img(src=`/public/stickers/capybara/${utils.getRandomInt(0, 47)}.png`, style="height:150px;")
+                    span(style="display:block;margin-top:8px;") CoffeeTox 2024
+
+        script
+            include js/script.js
+
+        block body
